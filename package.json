@@ -2,10 +2,19 @@
   "name": "forkify",
   "version": "1.0.0",
   "description": "Aplicação de receitas",
-  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "author": "Paulo P.",
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.5.0",
+    "parcel": "^2.5.0"
+  },
+  "dependencies": {
+    "core-js": "^3.22.3",
+    "regenerator-runtime": "^0.13.9",
+    "sass": "^1.51.0"
+  }
 }
