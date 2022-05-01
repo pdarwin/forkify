@@ -18,6 +18,9 @@ const controlRecipes = async () => {
     if (!id) return;
     recipeView.renderSpinner();
 
+    //0) Atualiza a vista de resultados para selecionar o resultado escolhido
+    resultsView.update(model.getSearchResultsByPage());
+
     //1) Carregar a receita
     await model.loadRecipe(id);
 
@@ -57,8 +60,17 @@ const controlPagination = goToPage => {
   paginationView.render(model.state.search);
 };
 
+const controlServings = newServings => {
+  // Atualiza as porções (o estado)
+  model.updateServings(newServings);
+
+  // Atualiza a vista
+  recipeView.update(model.state.recipe);
+};
+
 const init = () => {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
