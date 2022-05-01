@@ -6,6 +6,7 @@ import "regenerator-runtime/runtime";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
 import paginationView from "./views/paginationView.js";
+import bookmarksView from "./views/bookmarksView.js";
 
 // if (module.hot) {
 //   module.hot.accept();
@@ -20,6 +21,7 @@ const controlRecipes = async () => {
 
     //0) Atualiza a vista de resultados para selecionar o resultado escolhido
     resultsView.update(model.getSearchResultsByPage());
+    bookmarksView.update(model.state.bookmarks);
 
     //1) Carregar a receita
     await model.loadRecipe(id);
@@ -69,9 +71,15 @@ const controlServings = newServings => {
 };
 
 const controllAddBookmark = () => {
+  //1) Adicionar/remover marcador
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.removeBookmark(model.state.recipe.id);
+
+  //2 Atualizar lista de receitas
   recipeView.update(model.state.recipe);
+
+  //3) Renderizar marcadores
+  bookmarksView.render(model.state.bookmarks);
 };
 
 const init = () => {
