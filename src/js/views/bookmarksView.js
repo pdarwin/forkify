@@ -6,6 +6,10 @@ class BookmarksView extends View {
   _errMsg = "Sem marcadores. Escolha uma receita e marque-a! :D";
   _msg = "Sucesso!";
 
+  addhandlerRender(handler) {
+    window.addEventListener("load", handler);
+  }
+
   _generateMarkup() {
     return this._data
       .map(bookmark => previewView.render(bookmark, false))
