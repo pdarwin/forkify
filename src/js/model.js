@@ -1,7 +1,10 @@
-import { API_URL } from "./config";
+import { API_URL, RESULTS_PER_PAGE } from "./config";
 import { getJson } from "./helpers";
 
-export const state = { recipe: {}, search: { query: "", results: [] } };
+export const state = {
+  recipe: {},
+  search: { query: "", results: [], page: 1, resultsPerPage: RESULTS_PER_PAGE },
+};
 
 export const loadRecipe = async id => {
   try {
@@ -25,7 +28,11 @@ export const loadRecipe = async id => {
 };
 
 export const loadSearchResults = async query => {
+  //em algum sítio a página tem de ser resetada a 1 após uma busca
+  state.search.page = 1;
+
   state.search.query = query;
+
   const data = await getJson(`${API_URL}?search=${query}`);
   console.log(data);
 
@@ -42,4 +49,13 @@ export const loadSearchResults = async query => {
   } catch (err) {
     throw err;
   }
+};
+
+export const getSearchResultsByPage = (page = state.search.page) => {
+  state.search.page = page;
+
+  const start = (page - 1) * state.search.resultsPerPage;
+  const end = page * state.search.resultsPerPage;
+
+  return state.search.results.slice(start, end);
 };
