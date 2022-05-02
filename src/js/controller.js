@@ -101,8 +101,14 @@ const controlAddRecipe = async newRecipe => {
     //Renderiza a nova receita
     recipeView.render(model.state.recipe);
 
-    //mensagem de sucesso
+    //Mostra mensagem de sucesso
     addRecipeView.renderMsg();
+
+    //Renderizar bookmark
+    bookmarksView.render(model.state.bookmarks);
+
+    //Atualizar o ID nas URLs
+    window.history.pushState(null, "", `#${model.state.recipe.id}`);
 
     //Fechar form
     setTimeout = () => {

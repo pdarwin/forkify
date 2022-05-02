@@ -8,44 +8,30 @@ const timeout = s => {
   });
 };
 
-export const getJson = async url => {
+export const AJAX = async (url, uploadData = undefined) => {
   try {
-    const fetchPro = fetch(url);
+    const fetchPro = uploadData
+      ? fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(uploadData),
+        })
+      : fetch(url);
+
     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
     const data = await res.json();
 
     if (!res.ok) {
       if (res.status === 429) {
-        wait(10000, getJson, url);
+        wait(10000, AJAX, url, uploadData);
         return;
       } else throw new Error(`${data.message} (${res.status})`);
     }
-    // alert("Deu!");
-    console.log("Deu o GET!");
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
 
-export const sendJson = async (url, uploadData) => {
-  try {
-    const fetchPro = fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(uploadData),
-    });
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-    const data = await res.json();
+    const msg = `Deu o ${uploadData ? "POST" : "GET"}!`;
 
-    if (!res.ok) {
-      if (res.status === 429) {
-        wait(10000, getJson, url);
-        return;
-      } else throw new Error(`${data.message} (${res.status})`);
-    }
-    //alert("Deu!");
-    console.log("Deu o POST!");
+    //alert(msg);
+    console.log(msg);
     return data;
   } catch (err) {
     throw err;
