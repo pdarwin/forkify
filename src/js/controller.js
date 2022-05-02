@@ -8,6 +8,7 @@ import resultsView from "./views/resultsView.js";
 import paginationView from "./views/paginationView.js";
 import bookmarksView from "./views/bookmarksView.js";
 import addRecipeView from "./views/addRecipeView.js";
+import { MODAL_CLOSE_SEC } from "./config.js";
 
 // if (module.hot) {
 //   module.hot.accept();
@@ -89,10 +90,28 @@ const controlBookmarks = () => {
   bookmarksView.render(model.state.bookmarks);
 };
 
-const controlAddRecipe = newRecipe => {
-  console.log(newRecipe);
+const controlAddRecipe = async newRecipe => {
+  try {
+    //Mostrar o spinner
+    addRecipeView.renderSpinner();
 
-  //Carrega a nova receita
+    //Carrega a nova receita
+    await model.uploadRecipe(newRecipe);
+
+    //Renderiza a nova receita
+    recipeView.render(model.state.recipe);
+
+    //mensagem de sucesso
+    addRecipeView.renderMsg();
+
+    //Fechar form
+    setTimeout = () => {
+      addRecipeView.toggleWindow(), MODAL_CLOSE_SEC * 1000;
+    };
+  } catch (err) {
+    console.error("💩", err);
+    addRecipeView.renderError(err.message);
+  }
 };
 
 const init = () => {

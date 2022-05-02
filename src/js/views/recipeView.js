@@ -4,7 +4,7 @@ import View from "./View";
 
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
-  _errMsg = "Não conseguimos encontrar essa receita. Por favor, tente outra!";
+  _errMsg = "Não conseguimos encontrar esta receita. Por favor, tente outra!";
   _msg = "Sucesso!";
 
   addHandlerRender(handler) {
